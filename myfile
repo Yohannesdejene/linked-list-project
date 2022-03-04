@@ -1,0 +1,562 @@
+
+
+
+
+/*  ****************************GROUP MEMBERS ***********************
+            NAME                                        IDNO
+         1=YOHANNES DEJENE                          UGR/3171/12
+         2=LIUL GIRMA                               UGR/2618/12
+         3=MIHIRET FASIKA                           UGR/3521/12
+*/
+#include<iostream>
+using namespace std;
+
+struct Node {
+public:
+    int id;
+    string name;
+    string Fname;
+    int age;
+    string sex;
+    string dept;
+   char courseTitle;
+   string courseTitle[10];
+    int courseNo[10];
+    int creditHour[10];
+    int mark;
+    string grade;
+    Node* next;
+
+};
+Node*person=NULL;Node *temp=NULL;Node*o=NULL;Node *current=NULL;Node *nexts=NULL;
+// Stores the head of the Linked List
+Node* head =NULL;
+
+Node* ptr;
+// Check Function to check that if
+// Record Already Exist or Not
+bool check(int x)
+{
+    // Base Case
+    if (head == NULL)
+        return false;
+
+    Node* t = new Node;
+    t = head;
+
+    // Traverse the Linked List
+    while (t != NULL) {
+        if (t->id == x)
+            return true;
+        t = t->next;
+    }
+
+    return false;
+}
+
+
+void sort()
+{
+    Node* i;
+    Node* j;
+    string temp;
+    for ( i = head; i->next != NULL; i= i->next)
+    {
+        for ( j = i->next ; j->next != NULL; j= j->next)
+        {
+            if (i->name.compare(j->name) > 0)
+            {
+                temp = j->name;
+                j->name = i->name;
+                i->name= temp;
+            }
+
+        }
+    }
+
+    cout<<"the record is sucessfully sorted !!!!!"<<endl;
+}
+
+
+
+
+void SortedInsert()
+{
+    temp = head;
+    person = o;
+    if (head == NULL)
+    {
+        head = person;
+        person->next = NULL;
+    }
+    else
+    {
+        if (person->Fname >temp->Fname)
+        {
+            person->next = temp;
+            head= person;
+
+        }
+        else
+        {
+            cout<<"Sorted list: "<<endl;
+            cout << "IDNO\tName\t\tsex"
+                 <<"\tage"
+                 <<" \tdepartment "
+                 << "\tcourseTitle"
+                 <<"\tmark "
+                 <<"\tGrade\n";
+            while ((temp->next != NULL) && (temp->next->Fname > person->Fname))
+            {
+                temp = temp-> next;
+                while (person != NULL) {
+                    cout << person->id<< " \t"
+                         << person->name <<" "<<person->Fname<< "\t\t"
+                         <<person->sex<<"\t"
+                         <<person->age<<"\t"
+                         << person->dept <<"\t"
+                         <<person->courseTitle<<"\t"
+                         <<person->mark<<" \t"
+                         <<person->grade<<"\n";
+                    person = person->next;
+                }
+            }
+
+            person->next=temp->next;
+            temp->next = person;
+
+        }
+    }
+}
+
+
+void SortList()
+{
+
+    current = head;
+    if (current == NULL)
+        cout<<"List empty"<<endl;
+    else
+    {
+        while (current != NULL)
+        {
+            nexts= current->next;
+            SortedInsert();
+            current=nexts;
+        }
+
+
+    }
+
+
+
+
+}
+
+// Function to insert the record
+void Insert_Record(int id,string name,string Fname,int age,string sex,string dept)
+{
+    // if Record Already Exist
+    if (check(id)) {
+        cout << "Student with this "
+             << "record Already Exists\n";
+        return;
+    }
+
+    // Create new Node to Insert Record
+    Node* t = new Node();
+    t->id = id;
+    t->name = name;
+    t->Fname=Fname;
+    t->age=age;
+    t->sex=sex;
+    t->dept = dept;
+    t->next = NULL;
+
+    // Insert at Begin
+    if (head == NULL
+        || (head->id >= t->id)) {
+        t->next = head;
+        head = t;
+    }
+
+        // Insert at middle or End
+    else {
+        Node* c = head;
+        while (c->next != NULL
+               && c->next->id < t->id) {
+            c = c->next;
+        }
+        t->next = c->next;
+        c->next = t;
+    }
+
+    cout << "Record Inserted "
+         << "Successfully\n";
+}
+
+void registerCourse() {
+
+
+    if (head == NULL) {
+        cout << "NO recored ";
+    } else {
+        int roll, found;
+        double point;
+        string grade;
+        cout << "Enter the roll no of the student ";
+        cin >>roll;
+        Node *ptr = head;
+        while (ptr != NULL) {
+            if (roll == ptr->id) {
+                cout << "Enter the course  no ";
+                cin >> ptr->courseNo;
+                cout << "Enter the course Title ";
+                cin >> ptr->courseTitle;
+                cout << "Enter Course credit hour ";
+                cin >> ptr->creditHour;
+                cout << "Enter your score for the course ";
+                cin>>point;
+                ptr->mark=point;
+                if(point>=90&&point<=100)
+                    ptr->grade="A+";
+                else if(point>=85&&point<90)
+                    ptr->grade="A";
+                else if(point>=80&&point<85)
+                    ptr->grade="A-";
+                else if(point>=75&&point<80)
+                    ptr->grade="B+";
+                else if(point>=70&&point<75)
+                    ptr->grade="B-";
+                else if(point>=65&&point<70)
+                    ptr->grade="C+";
+                else if(point>=60&&point<65)
+                    ptr->grade="C";
+                else if(point>=55&&point<60)
+                    ptr->grade="C-";
+                else if(point>=40&&point<55)
+                    ptr->grade="D";
+                else if(point>=0&&point<40)
+                    ptr->grade="F";
+                else
+                    grade="NOT DEFIEND";
+
+                found++;
+            }
+            ptr = ptr->next;
+        }
+        if (found == 0) {
+            cout << "roll number not found ";
+
+        }
+    }
+    cout<<"registered successfully\n";
+}
+
+
+
+// Function to search record for any
+// students Record with roll number
+void Search_Record(int id)
+{
+    // if head is NULL
+    if (!head) {
+        cout << "No such Record "
+             << "Available\n";
+        return;
+    }
+
+        // Otherwise
+    else {
+        Node* p = head;
+        while (p) {
+            if (p->id == id) {
+                cout << "ID Number\t"
+                     << p->id << endl;
+                cout << "Name\t\t"
+                     << p->name << endl;
+                cout << "Department\t"
+                     << p->dept << endl;
+
+                return;
+            }
+            p = p->next;
+        }
+
+        if (p == NULL)
+            cout << "No such Record "
+                 << "Available\n";
+    }
+}
+
+void Search_courseNo(int courseNo)
+{
+    // if head is NULL
+    if (!head) {
+        cout << "No such Record "
+             << "Available\n";
+        return;
+    }
+
+        // Otherwise
+    else {
+        Node* p = head;
+        while (p) {
+            if (p->courseNo == courseNo) {
+                cout << "course Number\t"
+                     << p->courseNo << endl;
+                cout << "Course Title\t"
+                     << p->courseTitle << endl;
+                cout << "Credit hour\t"
+                     << p->creditHour<< endl;
+
+                return;
+            }
+            p = p->next;
+        }
+
+        if (p == NULL)
+            cout << "No such Record "
+                 << "Available\n";
+    }
+}
+
+
+// Function to delete record students
+// record with given roll number
+// if it exist
+int Delete_Record(int roll)
+{
+    Node* t = head;
+    Node* p = NULL;
+
+    // Deletion at Begin
+    if (t != NULL
+        && t->id== roll) {
+        head = t->next;
+        delete t;
+
+        cout << "Record Deleted "
+             << "Successfully\n";
+        return 0;
+    }
+
+    // Deletion Other than Begin
+    while (t != NULL && t->id != roll) {
+        p = t;
+        t = t->next;
+    }
+    if (t == NULL) {
+        cout << "Record does not Exist\n";
+        return -1;
+        p->next = t->next;
+
+        delete t;
+        cout << "Record Deleted "
+             << "Successfully\n";
+
+        return 0;
+    }
+    return 0;
+}
+
+int Delete_courseNo(int id,int courseNo)
+{
+    Node* t = head;
+    Node* p = NULL;
+
+    // Deletion at Begin
+    if (t != NULL
+        && t->courseNo == courseNo&& t->id==id) {
+        head = t->next;
+        delete t;
+
+        cout << "Record Deleted "
+             << "Successfully\n";
+        return 0;
+    }
+
+    // Deletion Other than Begin
+    while (t != NULL && (t->courseNo != courseNo|| t->id!=id) ){
+        p = t;
+        t = t->next;
+
+    }
+    if (t == NULL) {
+        cout << "Record does not Exist or Doesnt match any recored\n";
+        return -1;
+        p->next = t->next;
+
+        delete t;
+        cout << "Record Deleted "
+             << "Successfully\n";
+
+        return 0;
+    }
+    return 0;
+}
+
+// Function to display the Student's
+// Record
+void Show_Record()
+{
+    Node* p = head;
+    if (p == NULL) {
+        cout << "No Record "
+             << "Available\n";
+    }
+    else {
+        cout << "IDno\tName\t\t\tsex"
+             <<"\tage"
+             <<" \tdepartment "
+             << "\tRegistered courses\n";
+
+
+        // Until p is not NULL
+        while (p != NULL) {
+            cout << p->id << " \t"
+                 << p->name <<" "<<p->Fname<< "\t\t"
+                 <<p->sex<<"\t"
+                 <<p->age<<"\t"
+                 << p->dept <<"\t"
+                 <<p->courseTitle<<"\n";
+
+            p = p->next;
+        }
+    }
+}
+
+
+
+void Show_Grade(int id)
+{
+    // if head is NULL
+    if (!head) {
+        cout << "No such Record "
+             << "Available\n";
+        return;
+    }
+
+        // Otherwise
+    else {
+        Node* p = head;
+        while (p) {
+            if (p->id == id) {
+                cout<<"Student Name  :\t"<<p->name<<" "<<p->Fname<<"\n";
+                cout<<"Course name \t\t"<<"Grade\n";
+                cout<<"------------------------------------------\n";
+                cout<<p->courseTitle<<"\t\t\t"<<p->grade<<"\n";
+
+
+                return;
+            }
+            p = p->next;
+        }
+
+        if (p == NULL)
+            cout << "No such Record "
+                 << "Available\n";
+    }
+}
+
+
+
+// Driver code
+int main()
+{
+    head = NULL;
+    string name,Fname,sex,dept;
+    int id,age;
+    string courseTitle;
+    int courseNo,creditHour,point;
+
+    // Menu-driven program
+    while (true) {
+        cout << "\n\t\tWelcome to Student Record "
+                "Management System\n\n\tPress\n\t1 to "
+                "register student \n\t2 to register student for the course\n\t"
+                "3 to Search a Student by id\n\t"
+                "4 to search course by course number \n\t"
+                "5 to delete student record by id\n\t"
+                "6 to delete course by course no\n\t"
+                "7 to view all students\n\t"
+                "8 to show grade \n\t"
+                "9 to sort students \n\t"
+                "10 to Exit\n";
+        cout << "\nEnter your Choice\n";
+        int Choice;
+
+        // Enter Choice
+        cin >> Choice;
+        cin.ignore();
+        if (Choice == 1) {
+            cout << "Enter Name of Student\n";
+            //cin>>name;
+            getline(cin,name);
+            cout<<"Enter Father nanme";
+            cin>>Fname;
+            cout << "Enter id Number of Student\n";
+            cin >> id;
+            cout<<"Enter the age :\n";
+            cin>>age;
+            cout<<"Enter the sex :\n";
+            cin>>sex;
+            cout<<"Enter the deprtment :\n";
+            cin>>dept;
+
+            Insert_Record(id, name,Fname ,age,sex,dept);
+
+        }
+        else if(Choice == 2){
+
+            registerCourse();
+
+        }
+        else if (Choice == 3) {
+            cout << "Enter ID Number of Student whose "
+                    "record you want to Search\n";
+            cin >> id;
+            Search_Record(id);
+        }
+        else if(Choice==4){
+            cout<<"Enter the course number of the course you want to search\n";
+            cin>>courseNo;
+            Search_courseNo(courseNo);
+
+        }
+        else if (Choice == 5) {
+            cout << "Enter Roll Number of Student whose "
+                    "record is to be deleted\n";
+            cin >> id;
+            Delete_Record(id);
+        }else if(Choice==6){
+            cout<<"Enter the id number of the student\n";
+            cin>>id;
+            cout<<"Enter the course Number whose record is to be deleted \n";
+            cin>>courseNo;
+            Delete_courseNo(id,courseNo);
+        }
+
+        else if (Choice == 7) {
+            Show_Record();
+
+        }
+        else if (Choice == 8) {
+            cout << "Enter ID Number of Student whose "
+                    "grade you want to see\n";
+            cin >> id;
+            Show_Grade(id);
+        }
+        else if(Choice==9){
+            sort();
+        }
+        else if (Choice == 10) {
+            exit(0);
+        }
+        else {
+            cout << "Invalid Choice "
+                 << "Try Again\n";
+        }
+    }
+    return 0;
+}
