@@ -2,12 +2,6 @@
 
 
 
-/*  ****************************GROUP MEMBERS ***********************
-            NAME                                        IDNO
-         1=YOHANNES DEJENE                          UGR/3171/12
-         2=LIUL GIRMA                               UGR/2618/12
-         3=MIHIRET FASIKA                           UGR/3521/12
-*/
 #include<iostream>
 using namespace std;
 
